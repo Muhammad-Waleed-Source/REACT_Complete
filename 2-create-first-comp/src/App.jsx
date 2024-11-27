@@ -1,7 +1,18 @@
+import KgButton from "./KgButton";
+import { MainHeading } from "./mainHeading";
+import { SecondHeading } from "./mainHeading";
+import Hello from "./Hello";
+import Random from "./random";
 function App() { // functional component
   return <div>
     <h1>Hello World</h1>
-    <button>Submit Here</button>
+    <KgButton/>
+    <MainHeading/>
+    <SecondHeading/>
+    <Hello></Hello>
+    <Random></Random>
+    <Random></Random>
+    <Random></Random>
   </div>
   
 }
