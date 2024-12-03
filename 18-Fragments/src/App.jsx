@@ -11,7 +11,7 @@ function App() {
   return (
     <>
       <h1 className="food-heading">Healthy Food</h1>
-      <ErrorMsg items={foodItems}></ErrorMsg>
+      <ErrorMsg items={foodItems}></ErrorMsg> {/*Here items is a prop */}
       <FoodItems items={foodItems}></FoodItems>
     </>
   );
