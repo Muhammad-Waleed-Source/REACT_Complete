@@ -6,3 +6,7 @@
     font-weight: 600;
     color: rgb(255, 123, 0);
 }
+
+.button{
+    float: right;
+}
