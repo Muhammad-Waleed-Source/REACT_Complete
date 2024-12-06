@@ -1,9 +1,9 @@
-import FoodItems from "../components/FoodItems";
-import ErrorMsg from "../components/ErrorMsg";
+import FoodItems from "./components/FoodItems";
+import ErrorMsg from "./components/ErrorMsg";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import Container from "../components/Container";
-import FoodInput from "../components/FoodInput";
+import Container from "./components/Container";
+import FoodInput from "./components/FoodInput";
 
 function App() {
   // let foodItems = [];
