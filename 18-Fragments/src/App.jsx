@@ -4,33 +4,30 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import Container from "./components/Container";
 import FoodInput from "./components/FoodInput";
+import { useState } from "react";
 
 function App() {
-  // let foodItems = [];
-  let foodItems = [
-    "Butter",
-    "Green vegetable",
-    "Roti",
-    "Meat",
-    "Salad",
-    "Milk",
-  ];
+  // here we are destructuring the array => textToShow is the current state value (like arr[0]) and setTextState is the updater function (like arr[1]).
+  let [foodItems, setFoodItems] = useState([]);
+
+  const onKeyDown = (event) => {
+    if (event.key === "Enter") {
+      let newFoodItem = event.target.value;
+      event.target.value = ""; // used for clearing the input field after Enter
+      let newItems = [...foodItems, newFoodItem];
+      setFoodItems(newItems);
+    }
+  };
 
   return (
     <>
       <Container>
         <h1 className="food-heading">Healthy Food</h1>
+        <FoodInput handleKeyDown={onKeyDown} />
         <ErrorMsg items={foodItems}></ErrorMsg> {/*Here items is a prop */}
-        <FoodInput></FoodInput>
+        {/* <p>{textToShow}</p> */}
         <FoodItems items={foodItems}></FoodItems>
       </Container>
-
-      {/* <Container>
-        <p>
-          Above is the list of healthy foods that are good for you health and
-          well being.
-        </p>
-      </Container> */}
     </>
   );
 }
