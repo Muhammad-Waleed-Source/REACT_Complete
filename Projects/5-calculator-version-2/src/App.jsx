@@ -10,7 +10,7 @@ function App() {
     if(buttonText === 'C'){
       setCalVal("");
     } else if(buttonText === '='){
-      const result = eval(calVal);
+      const result = eval(calVal); // this will evaluate the string eg. "2+2"
       setCalVal(result);
     } else {
       const newDisplayValue = calVal + buttonText;

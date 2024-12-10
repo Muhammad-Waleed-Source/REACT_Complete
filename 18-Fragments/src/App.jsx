@@ -7,7 +7,7 @@ import FoodInput from "./components/FoodInput";
 import { useState } from "react";
 
 function App() {
-  // here we are destructuring the array => textToShow is the current state value (like arr[0]) and setTextState is the updater function (like arr[1]).
+  // here we are destructuring the array => foodItems is the current state value (like arr[0]) and setFoodItems is the updater function (like arr[1]).
   let [foodItems, setFoodItems] = useState([]);
 
   const onKeyDown = (event) => {
