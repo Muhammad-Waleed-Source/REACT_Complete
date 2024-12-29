@@ -1,0 +1,7 @@
+.itemsContainer {
+    text-align: left;
+}
+
+.addButton, .delButton{
+    font-size: 25px;
+}
