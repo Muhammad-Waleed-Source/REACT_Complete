@@ -4,34 +4,52 @@ import TodoItems from "./components/TodoItems";
 import WelcomeMessage from "./components/WelcomeMessage";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import { useState } from "react";
+import { useState, useReducer } from "react";
 import { TodoItemsContext } from "./store/todo-items-store";
 
+// reducer: pure function
+const todoItemsReducer = (currTodoItems, action) => {
+
+  let newTodoItems = currTodoItems;
+  if (action.type === "NEW_ITEM") {
+    newTodoItems = [
+      ...currTodoItems,
+      { name: action.payload.itemName, dueDate: action.payload.itemDueDate },
+    ];
+  } else if (action.type === "DELETE_ITEM") {
+    newTodoItems = currTodoItems.filter((item) => item.name !== action.payload.itemName);
+  }
+  return newTodoItems;
+};
+
 function App() {
-  const [todoItems, setTodoItems] = useState([]);
+  // const [todoItems, setTodoItems] = useState([]);
+  const [todoItems, dispatchTodoItems] = useReducer(todoItemsReducer, []);
 
   const addNewItem = (itemName, itemDueDate) => {
-    // same as above
-    setTodoItems((currValue) => [
-      ...currValue,
-      { name: itemName, date: itemDueDate },
-    ]);
+    const newItemAction = {
+      type: "NEW_ITEM",
+      payload: {
+        itemName,
+        itemDueDate,
+      },
+    };
+    dispatchTodoItems(newItemAction);
   };
 
   const deleteItem = (todoItemName) => {
-    const newTodoItems = todoItems.filter((item) => item.name !== todoItemName);
-    setTodoItems(newTodoItems);
-    console.log(`Item Deleted: ${todoItemName}`);
+
+    const deleteItemAction = {
+      type: "DELETE_ITEM",
+      payload: {
+        itemName: todoItemName,
+      },
+    };
+    dispatchTodoItems(deleteItemAction);
   };
 
   return (
-    <TodoItemsContext.Provider
-      value={{
-        todoItems: todoItems,
-        addNewItem: addNewItem,
-        deleteItem: deleteItem,
-      }}
-    >
+    <TodoItemsContext.Provider value={{ todoItems, addNewItem, deleteItem }}>
       <center className="todo-container">
         <AppName />
         <AddTodo />
