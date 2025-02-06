@@ -3,6 +3,7 @@ import { createContext, useReducer } from "react";
 export const PostList = createContext({
   postList: [],
   addPost: () => {},
+  addInitialPosts: () => {},
   deletePost: () => {},
 });
 
@@ -12,21 +13,20 @@ const postListReducer = (currPostList, action) => {
     newPostList = currPostList.filter(
       (post) => post.id !== action.payload.postId
     );
-  } else if (action.type === "ADD_POST"){
-    newPostList = [action.payload, ...currPostList]
+  } else if (action.type === "ADD_INITIAL_POSTS") {
+    newPostList = action.payload.posts;
+  } else if (action.type === "ADD_POST") {
+    newPostList = [action.payload, ...currPostList];
   }
   return newPostList;
 };
 
 const PostListProvider = ({ children }) => {
-  const [postList, dispatchPostList] = useReducer(
-    postListReducer,
-    DEFAULT_POST_LIST
-  );
+  const [postList, dispatchPostList] = useReducer(postListReducer, []);
 
   const addPost = (userId, postTitle, postBody, reactions, tags) => {
     dispatchPostList({
-      type: 'ADD_POST',
+      type: "ADD_POST",
       payload: {
         id: Date.now(),
         title: postTitle,
@@ -35,7 +35,16 @@ const PostListProvider = ({ children }) => {
         userId: userId,
         tags: tags,
       },
-    })
+    });
+  };
+
+  const addInitialPosts = (posts) => {
+    dispatchPostList({
+      type: "ADD_INITIAL_POSTS",
+      payload: {
+        posts
+      },
+    });
   };
   const deletePost = (postId) => {
     dispatchPostList({
@@ -47,29 +56,12 @@ const PostListProvider = ({ children }) => {
   };
 
   return (
-    <PostList.Provider value={{ postList, addPost, deletePost }}>
+    <PostList.Provider
+      value={{ postList, addPost, addInitialPosts, deletePost }}
+    >
       {children}
     </PostList.Provider>
   );
 };
-
-const DEFAULT_POST_LIST = [
-  {
-    id: "1",
-    title: "Going to Lahore",
-    body: "Hi friends I am goint to Lahore for my vacations. Hope to enjoy alot",
-    reactions: 2,
-    userId: "user-9",
-    tags: ["vacations", "Lahore", "Enjoying"],
-  },
-  {
-    id: "2",
-    title: "Working on Project",
-    body: "After a long period of time I started working on the project that we were working on since 2020.",
-    reactions: 15,
-    userId: "user-12",
-    tags: ["Project", "Stress", "Enjoying"],
-  },
-];
 
 export default PostListProvider;
