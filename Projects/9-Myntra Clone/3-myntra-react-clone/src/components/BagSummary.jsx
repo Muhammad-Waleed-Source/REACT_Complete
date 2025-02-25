@@ -1,27 +1,40 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 function BagSummary({}) {
-  const bagSummary = {
-    totalItem: 3,
-    totalMRP: 2345,
-    totalDiscount: 999,
-    finalPayment: 1346,
-  };
+  const bagItemsIds = useSelector((state) => state.bag);
+
+  const items = useSelector((state) => state.items);
+
+  const finalItems = items.filter((item) => {
+    const itemIndex = bagItemsIds.indexOf(item.id);
+    return itemIndex >= 0;
+  });
+
+  const CONVENIENCE_FEES = 99;
+  let totalItem = bagItemsIds.length;
+  let totalMRP = 0;
+  let totalDiscount = 0;
+
+  finalItems.forEach((bagItem) => {
+    totalMRP += bagItem.original_price;
+    totalDiscount += bagItem.original_price - bagItem.current_price;
+  });
+
+  let finalPayment = totalMRP - totalDiscount + CONVENIENCE_FEES;
 
   return (
     <div className="bag-summary">
       <div className="bag-details-container">
-        <div className="price-header">
-          PRICE DETAILS ({bagSummary.totalItem} Items){" "}
-        </div>
+        <div className="price-header">PRICE DETAILS ({totalItem} Items) </div>
         <div className="price-item">
           <span className="price-item-tag">Total MRP</span>
-          <span className="price-item-value">₹{bagSummary.totalMRP}</span>
+          <span className="price-item-value">₹{totalMRP}</span>
         </div>
         <div className="price-item">
           <span className="price-item-tag">Discount on MRP</span>
           <span className="price-item-value priceDetail-base-discount">
-            -₹{bagSummary.totalDiscount}
+            -₹{totalDiscount}
           </span>
         </div>
         <div className="price-item">
@@ -31,7 +44,7 @@ function BagSummary({}) {
         <hr />
         <div className="price-footer">
           <span className="price-item-tag">Total Amount</span>
-          <span className="price-item-value">₹{bagSummary.finalPayment}</span>
+          <span className="price-item-value">₹{finalPayment}</span>
         </div>
       </div>
       <button className="btn-place-order">
